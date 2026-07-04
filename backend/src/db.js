@@ -41,6 +41,17 @@ async function initTables() {
         position VARCHAR(255),
         bio TEXT,
         avatar_url TEXT,
+        secondary_email VARCHAR(255),
+        website_url VARCHAR(255),
+        twitter_handle VARCHAR(255),
+        street_address TEXT,
+        city VARCHAR(255),
+        postal_code VARCHAR(50),
+        edu_institution VARCHAR(255),
+        edu_degree VARCHAR(255),
+        edu_start_year INTEGER,
+        edu_end_year INTEGER,
+        edu_location VARCHAR(255),
         profile_completed BOOLEAN DEFAULT false,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -125,8 +136,19 @@ async function initTables() {
     }
     try {
       await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS username VARCHAR(255) UNIQUE;');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS secondary_email VARCHAR(255);');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS website_url VARCHAR(255);');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS twitter_handle VARCHAR(255);');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS street_address TEXT;');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS city VARCHAR(255);');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS postal_code VARCHAR(50);');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS edu_institution VARCHAR(255);');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS edu_degree VARCHAR(255);');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS edu_start_year INTEGER;');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS edu_end_year INTEGER;');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS edu_location VARCHAR(255);');
     } catch (alterErr) {
-      console.warn('Could not add users.username on startup:', alterErr.message);
+      console.warn('Could not add columns to users on startup:', alterErr.message);
     }
     console.log('Database tables post_likes, post_comments, and notifications verified/created.');
     try {
