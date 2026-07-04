@@ -28,6 +28,59 @@ pool.on('error', (err) => {
 async function initTables() {
   try {
     await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255),
+        email VARCHAR(255) UNIQUE,
+        username VARCHAR(255) UNIQUE,
+        password_hash VARCHAR(255),
+        role VARCHAR(50) DEFAULT 'user',
+        linkedin_url VARCHAR(255),
+        graduation_year INTEGER,
+        company VARCHAR(255),
+        position VARCHAR(255),
+        bio TEXT,
+        avatar_url TEXT,
+        profile_completed BOOLEAN DEFAULT false,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS posts (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255),
+        content TEXT,
+        image_url VARCHAR(255),
+        author_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        status VARCHAR(50) DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS events (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255),
+        description TEXT,
+        date_time TIMESTAMP,
+        location VARCHAR(255),
+        image_url VARCHAR(255),
+        creator_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        status VARCHAR(50) DEFAULT 'upcoming',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS event_attendees (
+        event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        PRIMARY KEY (event_id, user_id)
+      );
+    `);
+
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS post_likes (
         id SERIAL PRIMARY KEY,
         post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE,
