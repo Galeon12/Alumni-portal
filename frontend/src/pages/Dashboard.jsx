@@ -102,6 +102,15 @@ const Dashboard = () => {
     fetchPosts();
     fetchEvents();
     fetchNotifications();
+
+    // Poll every 10 seconds for real-time updates
+    const interval = setInterval(() => {
+      fetchPosts();
+      fetchEvents();
+      fetchNotifications();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -208,6 +217,9 @@ const Dashboard = () => {
         const data = await response.json();
         setSelectedEvent(data.event);
         setEventAttendees(data.attendees);
+      } else {
+        const errText = await response.text();
+        console.error(`Fetch event detail failed: ${response.status} - ${errText}`);
       }
     } catch (error) {
       console.error('Error fetching event details:', error);

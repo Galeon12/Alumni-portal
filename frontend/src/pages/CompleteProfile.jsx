@@ -753,30 +753,7 @@ const CompleteProfile = () => {
 
               {/* Share actions */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
-                <button 
-                  type="button" 
-                  onClick={handleGmailImportClick} 
-                  style={{
-                    backgroundColor: '#db4437', // Google red
-                    color: '#ffffff',
-                    border: 'none',
-                    borderRadius: '6px',
-                    padding: '12px 24px',
-                    fontSize: '0.95rem',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px',
-                    boxShadow: '0 2px 4px rgba(219,68,55,0.2)',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#c53727'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#db4437'}
-                >
-                  <Mail size={18} /> Invite Google Contacts
-                </button>
+
 
                 <a 
                   href={`https://api.whatsapp.com/send?text=Join%20the%20official%20AlgoUniversity%20Alumni%20Portal%20at%20${window.location.origin}/register`}
@@ -806,28 +783,7 @@ const CompleteProfile = () => {
                 </a>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0', color: 'var(--text-muted)' }}>
-                <hr style={{ flex: 1, border: 'none', height: '1px', backgroundColor: 'var(--border-color)' }} />
-                <span style={{ fontSize: '0.75rem', fontWeight: 'bold', margin: '0 12px', letterSpacing: '0.05em' }}>OR ENTER MANUALLY</span>
-                <hr style={{ flex: 1, border: 'none', height: '1px', backgroundColor: 'var(--border-color)' }} />
-              </div>
 
-              <div style={{ marginBottom: '32px' }}>
-                <label style={formLabelStyle} htmlFor="invite_emails">Enter emails separated by commas</label>
-                <textarea
-                  id="invite_emails"
-                  rows="3"
-                  style={{...formInputStyle, resize: 'none', marginTop: '4px'}}
-                  placeholder="alex@example.com, sanjay@example.com"
-                  value={formData.invite_emails}
-                  onChange={handleChange}
-                />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px' }}>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '500' }}>
-                    Selected: {formData.invite_emails ? formData.invite_emails.split(',').filter(e => e.trim()).length : 0} email(s)
-                  </div>
-                </div>
-              </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <button 

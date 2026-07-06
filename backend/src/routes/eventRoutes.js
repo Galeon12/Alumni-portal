@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
     // 1. Fetch Event Info
     const eventQuery = `
       SELECT e.id, e.title, e.description, e.date_time, e.location, e.image_url, e.creator_id, e.status, e.created_at,
-             u.name as creator_name, u.role as creator_role,
+             u.name as creator_name,
              (SELECT COUNT(*) FROM event_attendees WHERE event_id = e.id) as attendee_count,
              EXISTS (SELECT 1 FROM event_attendees WHERE event_id = e.id AND user_id = $1) as is_attending
       FROM events e
@@ -61,7 +61,7 @@ router.get('/:id', async (req, res) => {
       FROM event_attendees ea
       JOIN users u ON ea.user_id = u.id
       WHERE ea.event_id = $1
-      ORDER BY ea.joined_at ASC;
+      ORDER BY u.name ASC;
     `;
     const attendeesResult = await db.query(attendeesQuery, [id]);
 
@@ -71,7 +71,7 @@ router.get('/:id', async (req, res) => {
     });
   } catch (error) {
     console.error('Fetch event detail error:', error);
-    res.status(500).json({ message: 'Internal server error while fetching event details.' });
+    res.status(500).json({ message: 'Internal server error while fetching event details.', error: error.stack || String(error) });
   }
 });
 
