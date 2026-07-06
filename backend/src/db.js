@@ -1,18 +1,16 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-const poolConfig = process.env.DATABASE_URL
-  ? {
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }
-    }
-  : {
-      user: process.env.DB_USER,
-      host: process.env.DB_HOST,
-      database: process.env.DB_NAME,
-      password: process.env.DB_PASSWORD,
-      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-    };
+if (!process.env.DATABASE_URL) {
+  console.error("ERROR: DATABASE_URL environment variable is missing.");
+  console.error("Please add your Neon database URL to your .env file.");
+  process.exit(1);
+}
+
+const poolConfig = {
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+};
 
 const pool = new Pool(poolConfig);
 
